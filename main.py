@@ -32,11 +32,6 @@ cell_h=32
 img_w=grid_w*cell_w
 img_h=grid_h*cell_h
 
-
-#e = K.variable([[[[0.52567786,0.35494375],[1.5256779,0.35494375]]]]) - K.variable([[[[0.03125,0.0625]],[[1.5,0.5]]]])
-#e = K.variable([[0.52567786,0.35494375],[1.5256779,0.35494375]]) - K.variable([[0.03125,0.0625],[1.5,0.5]])
-#print(K.eval(e))
-#sys.exit()
 #
 # Read input image and output prediction
 #
