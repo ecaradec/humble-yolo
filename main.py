@@ -140,28 +140,25 @@ def custom_loss(y_true, y_pred):
     # when we add the confidence the box prediction lower in quality but we gain the estimation of the quality of the box
     # however the training is a bit unstable
 
-    # minimum distance between boxes distance between the two center
-    intersect_wh = K.maximum(K.zeros_like(y_pred_wh), (y_pred_wh + y_true_wh)/2 - K.abs(y_pred_xy - y_true_xy) )
+    # compute the intersection of all boxes at once (the IOU)
+    intersect_wh = K.maximum(K.zeros_like(y_pred_wh), (y_pred_wh + y_true_wh)/2 - K.square(y_pred_xy - y_true_xy) )
     intersect_area = intersect_wh[...,0] * intersect_wh[...,1]
     true_area = y_true_wh[...,0] * y_true_wh[...,1]
     pred_area = y_pred_wh[...,0] * y_pred_wh[...,1]
     union_area = pred_area + true_area - intersect_area
     iou = intersect_area / union_area
 
-    conf_loss = K.sum(K.square(y_true_conf*iou - y_pred_conf)*y_true_conf, axis=-1)
+    conf_loss = K.sum(K.square(y_true_conf*iou - y_pred_conf), axis=-1)
 
-    d =  clss_loss + xy_loss + wh_loss + conf_loss
-    #d = xy_loss + wh_loss
+    # final loss function
+    d = xy_loss + wh_loss + conf_loss + clss_loss
     
-    #d = tf.Print(d, [iou],  "d",  15, 100)
-    #d = tf.Print(d, [xy_loss],  "xy_loss",  15, 100)
-    #d = tf.Print(d, [y_pred_xy], "y_pred_xy",  15, 100)
-    #d = tf.Print(d, [pred_boxes], "pred_boxes",  15, 100)
-    #d = tf.Print(d, [clss_loss], "clss_loss",  15, 100)
-    #d = tf.Print(d, [xy_loss],   "xy_loss",  15, 100)
-    #d = tf.Print(d, [conf_loss],  "conf_loss",  10000, 100)
-    #d = tf.Print(d, [coord_mask],  "coord_mask",  150, 100)
-    #d = tf.Print(d, [K.sum(K.square(y_true_xy - y_pred_xy),axis=-1)],  "xy_loss",  150, 100)
+    if False:
+        d = tf.Print(d, [d], "loss")
+        d = tf.Print(d, [xy_loss], "xy_loss")
+        d = tf.Print(d, [wh_loss], "wh_loss")
+        d = tf.Print(d, [clss_loss], "clss_loss")
+        d = tf.Print(d, [conf_loss], "conf_loss")
     
     return d
 
