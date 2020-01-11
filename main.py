@@ -206,17 +206,10 @@ for j in range(0,25):
     col = 0
     for row in range(grid_w):
         for col in range(grid_h):
-            if col == 0:
-                color = 'r'
-                offset = 0
-            else:
-                color = 'g'
-                offset = 0.5
-
             p = P[0][col*grid_h+row]
-            c = p[0:3]    
 
             boxes = p[3:].reshape(nb_boxes,5)
+            clss = np.argmax(p[0:2])
             
             ax = plt.subplot(5,5,j+1)
             imgplot = plt.imshow(img)
@@ -228,13 +221,14 @@ for j in range(0,25):
                 w = b[2]
                 h = b[3]
                 conf = b[4]
-                #if conf > 0.1:
-                    
-                color = ['r','g','b'][i]
+                if conf < 0.5:
+                    continue
+
+                color = ['r','g','b','0'][clss]
                 rect = patches.Rectangle((x*cell_w-w/2*img_w, y*cell_h-h/2*img_h), w*img_h, h*img_h, linewidth=1,edgecolor=color,facecolor='none')
                 ax.add_patch(rect)
 
-                ax.text( (x*cell_w-w/2*img_w) / img_w, 1-(y*cell_h-h/2*img_h)/img_h-i*0.15, "%0.01f" % (conf), transform=ax.transAxes, color=color)
+                ax.text( (x*cell_w-w/2*img_w) / img_w, 1-(y*cell_h-h/2*img_h)/img_h-i*0.15, "%0.2f" % (conf), transform=ax.transAxes, color=color)
                 i+=1
 
 plt.show()
