@@ -98,21 +98,39 @@ model = Model(i, x)
 #It does so by outputting a number. The larger the number, the further we are from a correct solution.
 #Keras also accept that we output a tensor. In that case it will just sum all the numbers to get a single number.
 # 
+# y_true is training data
+# y_pred is value predicted by the network
 def custom_loss(y_true, y_pred):
+    # define a grid of offsets
+    # [[[ 0.  0.]]
+    # [[ 1.  0.]]
+    # [[ 0.  1.]]
+    # [[ 1.  1.]]]
     grid = np.array([ [[float(x),float(y)]]*nb_boxes   for y in range(grid_h) for x in range(grid_w)])
 
+    # first three values are classes : cat, rat, and none.
+    # However yolo doesn't predict none as a class, none is everything else and is just not predicted
+    # so I don't use it in the loss
     y_true_class = y_true[...,0:2]
-    y_pred_class = y_pred[...,0:2]
+    y_pred_class = y_pred[...,0:2] 
 
+    # reshape array as a list of grid / grid cells / boxes / of 5 elements
     pred_boxes = K.reshape(y_pred[...,3:], (-1,grid_w*grid_h,nb_boxes,5))
     true_boxes = K.reshape(y_true[...,3:], (-1,grid_w*grid_h,nb_boxes,5))
     
+    # sum coordinates of center of boxes with cell offsets.
+    # as pred boxes are limited to 0 to 1 range, pred x,y + offset is limited to predicting elements inside a cell
     y_pred_xy   = pred_boxes[...,0:2] + K.variable(grid)
+    # w and h predicted are 0 to 1 with 1 being image size
     y_pred_wh   = pred_boxes[...,2:4]
+    # probability that there is something to predict here
     y_pred_conf = pred_boxes[...,4]
 
+    # same as predicate except that we don't need to add an offset, coordinate are already between 0 and cell count
     y_true_xy   = true_boxes[...,0:2]
+    # with and height
     y_true_wh   = true_boxes[...,2:4]
+    # probability that there is something in that cell. 0 or 1 here as it's a certitude.
     y_true_conf = true_boxes[...,4]
 
     clss_loss  = K.sum(K.square(y_true_class - y_pred_class), axis=-1)
