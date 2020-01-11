@@ -149,7 +149,7 @@ def custom_loss(y_true, y_pred):
 
 model = Model(i, x)
 
-adam = keras.optimizers.Adam(lr=0.001, beta_1=0.9, beta_2=0.999, decay=0.0)
+adam = keras.optimizers.Adam(lr=0.001, beta_1=0.9, beta_2=0.999, decay=0.01)
 model.compile(loss=custom_loss, optimizer=adam) # better
 
 print(model.summary())
@@ -163,7 +163,7 @@ parser.add_argument('--epoch', help='epoch', const='int', nargs='?', default=1)
 args = parser.parse_args()
 
 if args.train:
-    model.fit(x_train, y_train, batch_size=32, epochs=int(args.epoch))
+    model.fit(x_train, y_train, batch_size=64, epochs=int(args.epoch))
     model.save_weights('weights_006.h5')
 else:
     model.load_weights('weights_006.h5')

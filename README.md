@@ -3,7 +3,7 @@ humble-yolo is a minimal implementation of YOLO v1 I wrote to learn about the am
 To test it run :
 
 1. generate-dataset.py to generate data
-2. main.py --train --epoch 20 for training the network
+2. main.py --train --epoch 100 for training the network
 
 You should see a list of images with bounding boxes. The first 10 images are test data not used for training. You can evaluate the performance of the network on those. The remaining images have been used for the training.
 
