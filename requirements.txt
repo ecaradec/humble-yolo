@@ -2,7 +2,7 @@ appnope==0.1.0
 backports.functools-lru-cache==1.4
 backports.shutil-get-terminal-size==1.0.0
 backports.weakref==1.0rc1
-bleach==1.5.0
+bleach==3.1.1
 boto==2.48.0
 boto3==1.5.29
 botocore==1.8.43
