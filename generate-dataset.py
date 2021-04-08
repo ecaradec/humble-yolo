@@ -2,6 +2,7 @@ from PIL import Image, ImageDraw
 import random
 import string
 import numpy as np
+import os
 
 def one_hot(x, length):
     return [1 if x==i else 0 for i in range(length)]
@@ -14,6 +15,11 @@ cell_w = 32
 cell_h = 32
 grid_w = 2
 grid_h = 2
+
+if not os.path.exists('Labels'):
+    os.mkdir('Labels')
+if not os.path.exists('Images'):
+    os.mkdir('Images')
 
 for j in range(0,5000):
     img = Image.new('RGB', (grid_w*cell_w,grid_h*cell_h))
