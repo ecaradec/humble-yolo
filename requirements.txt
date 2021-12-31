@@ -44,7 +44,7 @@ msgpack-python==0.4.8
 murmurhash==0.28.0
 nltk==3.2.4
 numpy==1.13.1
-opencv-python==3.4.4.19
+opencv-python==4.2.0.32
 pandas==0.21.1
 pathlib==1.0.1
 pathlib2==2.3.3
