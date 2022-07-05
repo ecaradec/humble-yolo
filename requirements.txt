@@ -84,7 +84,7 @@ thinc==6.10.2
 toolz==0.8.2
 tqdm==4.19.4
 traitlets==4.3.2
-ujson==1.35
+ujson==5.4.0
 urllib3==1.22
 virtualenv==16.0.0
 virtualenv-clone==0.3.0
