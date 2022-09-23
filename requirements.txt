@@ -56,7 +56,7 @@ pipenv==2018.5.18
 plac==0.9.6
 preshed==1.0.0
 prompt-toolkit==1.0.15
-protobuf==3.4.0
+protobuf==3.18.3
 ptyprocess==0.6.0
 Pygments==2.3.1
 pyparsing==2.2.0
